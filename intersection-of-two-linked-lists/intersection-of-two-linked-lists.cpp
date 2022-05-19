@@ -9,23 +9,25 @@
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        set<ListNode*> vis;
-        ListNode* temp1 = headA, *temp2 = headB;
-        while(temp1 != NULL || temp2 != NULL)
+        ListNode *ans = NULL, *temp = headA;
+        while(temp != NULL)
         {
-            if(temp1 != NULL)
-            {
-                if(vis.count(temp1)) return temp1;
-                vis.insert(temp1);
-                temp1 = temp1->next;
-            }
-            if(temp2 != NULL)
-            {
-                if(vis.count(temp2)) return temp2;
-                vis.insert(temp2);
-                temp2 = temp2->next;
-            }
+            temp->val -= 1e6;
+            temp = temp->next;
         }
-        return NULL;
+        temp = headB;
+        while(temp != NULL && ans == NULL)
+        {
+            if(temp->val < 0)
+                ans = temp;
+            temp = temp->next;
+        }
+        temp = headA;
+        while(temp != NULL)
+        {
+            temp->val += 1e6;
+            temp = temp->next;
+        }
+        return ans;
     }
 };
